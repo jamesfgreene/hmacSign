@@ -2,7 +2,7 @@
 
 DESCRIPTION:
 
-Sign an API request using HMAC and an expiration time.
+Sign an API request using HMAC, including an expiration time of 60 seconds from the time the checksum is initially generated.
 
 Includes: 
 
@@ -10,6 +10,8 @@ Includes:
 
   2) Basic error reporting when the checkchecksum API route is requested and the "checksum" input parameter is missing or an 
      invalid format. 
+     
+  3) A 60 second expiration time on the checksum.
 
 
 DEPLOYMENT:
