@@ -6,6 +6,7 @@ import hmac,hashlib
 import urllib
 import json
 import bleach
+import HTMLParser
 
 global secretKey
 
@@ -13,10 +14,10 @@ secretKey	= 'dirtyLittleSecret'
 app			= Flask(__name__)
 
 @app.route("/checksum", methods=['GET'])
-def checksum():	
-	
+def checksum():		
 	#Get the "url" input parameter and sanitize it, removing ability to use XSS
 	requestParamURL = bleach.clean(request.args.get('url'), strip=True)
+	#requestParamURL = request.args.get('url')
 
 	# Set the checksum to expire 60 seconds from now.
 	expireTime = str(int(time.time()) + 60)
@@ -25,11 +26,13 @@ def checksum():
 	hmacData = requestParamURL+"-"+expireTime
 	checksum = hmac.new(secretKey, hmacData, hashlib.sha256).hexdigest()+"-"+expireTime
 
-	# This is a convenience so you can quickly paste in the parameters when running the "checkchecksum" operation.
+	# This is done as convenience to run the "checkchecksum" operation by copying and pasting the "verify_checksum" JSON attribute defined in the responseData below.
 	verifyChecksumParams = "url="+urllib.quote_plus(requestParamURL)+"&checksum="+checksum
 
-	# JSON encode the data
-	responseData = json.dumps({"url": requestParamURL, "checksum": checksum, "verify_checksum_url":verifyChecksumParams}, sort_keys=True)
+	htmlParser = HTMLParser.HTMLParser()
+
+	# JSON encode the data.  When showing the URL in its normal form, need to unescape it (because bleach.clean changes & to &amp;)
+	responseData = json.dumps({"url": htmlParser.unescape(requestParamURL), "checksum": checksum, "verify_checksum":"curl -i -XGET '"+request.url_root+"checkchecksum?"+verifyChecksumParams+"'"}, sort_keys=True)
 	
 	return Response(responseData, status=200, mimetype='application/json')
 
