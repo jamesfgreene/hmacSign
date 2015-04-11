@@ -6,19 +6,28 @@ Sign an API request using HMAC and an expiration time.
 
 Includes: 
   1) XSS protection 
+
   2) Basic error reporting when the checkchecksum API route is requested and the "checksum" input parameter is missing or an invalid format. 
 
 
 DEPLOYMENT:
 1) Requirement: make sure that your environment has python 2.7.9 installed
+
    a) If you have a different version of python installed and don't want to disrupt what is natively installed on your server:
+
       i)   install virtualenvwrapper (pip install virtualenvwrapper)
+      
       ii)  follow directions at this URL: http://simononsoftware.com/virtualenv-tutorial-part-2/
+      
       iii) To change to version 2.7.9, refer to the URL above, and go to the "Using Different Python Versions"
            NOTE: you will have to figure out how to install Python 2.7.* on your *nix server if it is not already installed  
+
 2) Choose a directory where you want to clone this repo.
+
 3) git clone https://github.com/jamesfgreene/hmacSign.git
+
 4) pip install -r requirements.txt 
+
 5) Start the service:
      
    python hmacSigning.py
