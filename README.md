@@ -5,6 +5,7 @@ DESCRIPTION:
 Sign an API request using HMAC and an expiration time.
 
 Includes: 
+
   1) XSS protection 
 
   2) Basic error reporting when the checkchecksum API route is requested and the "checksum" input parameter is missing or an 
