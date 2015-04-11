@@ -7,13 +7,16 @@ Sign an API request using HMAC and an expiration time.
 Includes: 
   1) XSS protection 
 
-  2) Basic error reporting when the checkchecksum API route is requested and the "checksum" input parameter is missing or an invalid format. 
+  2) Basic error reporting when the checkchecksum API route is requested and the "checksum" input parameter is missing or an 
+     invalid format. 
 
 
 DEPLOYMENT:
+
 1) Requirement: make sure that your environment has python 2.7.9 installed
 
-   a) If you have a different version of python installed and don't want to disrupt what is natively installed on your server:
+   a) If you have a different version of python installed and don't want to disrupt what is natively installed on your 
+      server:
 
       i)   install virtualenvwrapper (pip install virtualenvwrapper)
       
@@ -39,6 +42,7 @@ Example:
 1) First, generate the checksum, given the url:
 
 Request:
+
   curl -i -XGET "http://localhost:5000/checksum?url=http://www.foo.com%3Ffoo%3Dx%26bar%3Dy%3Cscript%3D"                                                                   
 
 Response:
@@ -54,11 +58,14 @@ Response:
 	"verify_checksum": "curl -i -XGET 'http://localhost:5000/checkchecksum?url=http%3A%2F%2Fwww.foo.com%3Ffoo%3Dx%26amp%3Bbar%3Dy&checksum=d37359dfa798c68b894bbf4f4309bc1f71d03f2d026ebfd3a91d5c603013aaf8-1428723716'"
   }
 
-2) Berify the checksum by executing the "checkchecksum" endpoint with the url and checksum
+2) Verify the checksum by executing the "checkchecksum" endpoint with the url and checksum
+
 NOTE: you will need to properly urlencode the "url" input parameter.
+
 Or you can simply copy and paste the "verify_checksum" JSON attribute from the response above and whack enter):
 
 Request: 
+
   curl -i -XGET 'http://localhost:5000/checkchecksum?url=http%3A%2F%2Fwww.foo.com%3Ffoo%3Dx%26amp%3Bbar%3Dy&checksum=d37359dfa798c68b894bbf4f4309bc1f71d03f2d026ebfd3a91d5c603013aaf8-1428723716'
 
 Response: 
@@ -76,9 +83,11 @@ Response:
 3) If time has expired (60 seconds has passed since the checksum was created for the URL) or the checksum and/or URL are modified:
 
 Request: 
+
   curl -i -XGET 'http://localhost:5000/checkchecksum?url=http%3A%2F%2Fwww.foo.com%3Ffoo%3Dx%26amp%3Bbar%3Dy&checksum=d37359dfa798c68b894bbf4f4309bc1f71d03f2d026ebfd3a91d5c603013aaf8-1428723716'
 
 Response:
+
   HTTP/1.0 400 BAD REQUEST
   Content-Type: application/json
   Content-Length: 19
