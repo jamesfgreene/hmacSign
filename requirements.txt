@@ -1,5 +1,5 @@
 bleach==1.4.1
-Flask==0.10.1
+Flask==2.2.5
 html5lib==0.999
 itsdangerous==0.24
 Jinja2==2.7.3
